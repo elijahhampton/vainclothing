@@ -1,8 +1,10 @@
 import React from 'react';
 import './styles.scss';
 
-const MenuItem = ({ title, coverImage, size }) => (
-    <div className={`${size} menu-item`}>
+import { withRouter } from 'react-router-dom';
+
+const MenuItem = ({ title, coverImage, size, history, linkUrl, match }) => (
+    <div className={`${size} menu-item`} onClick={() => history.push(`${match.url}${linkUrl}`)}>
     <div className='background-image' style={{backgroundImage: `url(${coverImage})`}} />
     <div className='content'>
         <h1 className='title'>{title.toUpperCase()}</h1>
@@ -11,4 +13,4 @@ const MenuItem = ({ title, coverImage, size }) => (
 </div>
 )
 
-export default MenuItem;
+export default withRouter(MenuItem);
