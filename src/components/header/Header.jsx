@@ -6,8 +6,10 @@ import './styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 
 import { auth } from '../../firebase/firebase.utils';
+import CartIcon from '../cart-icon/CartIcon';
+import CartDropdown from '../cart-dropdown/CartDropdown';
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
 
     <div className='header'>
         <Link to="/" className='logo-container'>
@@ -21,23 +23,33 @@ const Header = ({ currentUser }) => (
                     CONTACT
                 </Link>
                 {
-                    () => alert(currentUser)
-                }
-                {
-                    currentUser ? (
-                    <div className='option' onClick={() => auth.signOut()}>SIGN OUT</div>
-                    )
+                    currentUser ? 
+                    (<div 
+                    className='option' 
+                    onClick={() => auth.signOut()}>
+                        SIGN OUT
+                    </div>)
                     :
-                    (
-                    <Link className='option' to='/signin'>SIGN IN</Link>
-                    )
+                    (<Link 
+                        className='option' 
+                        to='/signin'>
+                            SIGN IN
+                    </Link>)
                 }
+                <CartIcon />
             </div>
+            {
+                hidden ?
+                null
+                :
+                (<CartDropdown />)
+            }
     </div>
 )
 
-const mapStateToProps = state => ({
-    currentUser: state.user.currentUser
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden }}) => ({
+    currentUser: currentUser,
+    hidden
 })
 
 export default connect(mapStateToProps)(Header);
